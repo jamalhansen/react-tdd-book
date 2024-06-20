@@ -1,0 +1,22 @@
+{
+  "name": "appointments",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jamalhansen/react-add-book.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamalhansen/react-add-book/issues"
+  },
+  "homepage": "https://github.com/jamalhansen/react-add-book#readme",
+  "description": "",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
