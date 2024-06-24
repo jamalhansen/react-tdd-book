@@ -1,6 +1,6 @@
 import React, { act } from "react";
 import ReactDOM from "react-dom/client";
-import { Appointment, AppointmentsDayView } from "../src/Appointment";
+import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
 
 window.React = React;
 describe("Appointment", () => {
