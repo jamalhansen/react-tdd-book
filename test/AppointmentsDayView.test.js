@@ -11,22 +11,62 @@ describe("Appointment", () => {
     document.body.replaceChildren(container);
   });
 
+  const today = new Date();
+  const ashley = { firstName: "Ashley", lastName: "Zashley" };
+  const tobias = { firstName: "Tobias", lastName: "Turtledove" };
+  const appointment = {
+    startsAt: today.setHours(15, 0),
+    customer: ashley,
+    stylist: "Jo",
+    service: "Cut",
+    notes: "Use the nice smock",
+  };
+
   const render = (component) => {
     act(() => ReactDOM.createRoot(container).render(component));
   };
 
   it("renders the customer first name", () => {
-    const customer = { firstName: "Ashley" };
-    render(<Appointment customer={customer} />);
+    render(<Appointment customer={ashley} />);
 
-    expect(document.body.textContent).toContain("Ashley");
+    expect(document.body.textContent).toContain(ashley.firstName);
   });
 
   it("renders another customer first name", () => {
-    const customer = { firstName: "Jordan" };
-    render(<Appointment customer={customer} />);
+    render(<Appointment customer={tobias} />);
 
-    expect(document.body.textContent).toContain("Jordan");
+    expect(document.body.textContent).toContain(tobias.lastName);
+  });
+
+  it("renders the customer last name", () => {
+    render(<Appointment customer={ashley} />);
+
+    expect(document.body.textContent).toContain(ashley.lastName);
+  });
+
+  it("renders the stylist's name", () => {
+    render(<Appointment {...appointment} />);
+
+    expect(document.body.textContent).toContain(appointment.stylist);
+  });
+
+  it("renders the service", () => {
+    render(<Appointment {...appointment} />);
+
+    expect(document.body.textContent).toContain(appointment.service);
+  });
+
+  it("renders the notes", () => {
+    const customer = { notes: "my notes" };
+    render(<Appointment {...appointment} />);
+
+    expect(document.body.textContent).toContain(appointment.notes);
+  });
+
+  it("renders the appointment time prominantly", () => {
+    render(<Appointment {...appointment} />);
+    const header = document.querySelector("h2");
+    expect(header.textContent).toEqual("15:00 Appointment");
   });
 });
 
