@@ -1,14 +1,16 @@
-import React, { act } from "react";
-import ReactDOM from "react-dom/client";
+import React from "react";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
+import {
+  initializeReactContainer,
+  container,
+  render,
+  click,
+} from "./reactTestExtensions";
 
 window.React = React;
 describe("Appointment", () => {
-  let container;
-
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.replaceChildren(container);
+    initializeReactContainer();
   });
 
   const today = new Date();
@@ -22,65 +24,54 @@ describe("Appointment", () => {
     notes: "Use the nice smock",
   };
 
-  const render = (component) => {
-    act(() => ReactDOM.createRoot(container).render(component));
-  };
-
   it("renders the customer first name", () => {
     render(<Appointment customer={ashley} />);
 
-    expect(document.body.textContent).toContain(ashley.firstName);
+    expect(document.body).toContainText(ashley.firstName);
   });
 
   it("renders another customer first name", () => {
     render(<Appointment customer={tobias} />);
 
-    expect(document.body.textContent).toContain(tobias.lastName);
+    expect(document.body).toContainText(tobias.lastName);
   });
 
   it("renders the customer last name", () => {
     render(<Appointment customer={ashley} />);
 
-    expect(document.body.textContent).toContain(ashley.lastName);
+    expect(document.body).toContainText(ashley.lastName);
   });
 
   it("renders the stylist's name", () => {
     render(<Appointment {...appointment} />);
 
-    expect(document.body.textContent).toContain(appointment.stylist);
+    expect(document.body).toContainText(appointment.stylist);
   });
 
   it("renders the service", () => {
     render(<Appointment {...appointment} />);
 
-    expect(document.body.textContent).toContain(appointment.service);
+    expect(document.body).toContainText(appointment.service);
   });
 
   it("renders the notes", () => {
     const customer = { notes: "my notes" };
     render(<Appointment {...appointment} />);
 
-    expect(document.body.textContent).toContain(appointment.notes);
+    expect(document.body).toContainText(appointment.notes);
   });
 
   it("renders the appointment time prominantly", () => {
     render(<Appointment {...appointment} />);
     const header = document.querySelector("h3");
-    expect(header.textContent).toEqual("Today's appointment at 15:00");
+    expect(header).toContainText("Today's appointment at 15:00");
   });
 });
 
 describe("AppointmentsDayView", () => {
-  let container;
-
   beforeEach(() => {
-    container = document.createElement("div");
-    document.body.replaceChildren(container);
+    initializeReactContainer();
   });
-
-  const render = (component) => {
-    act(() => ReactDOM.createRoot(container).render(component));
-  };
 
   const today = new Date();
   const twoAppointments = [
@@ -115,20 +106,20 @@ describe("AppointmentsDayView", () => {
   it("renders the time of each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
     const listChildren = document.querySelectorAll("ol > li");
-    expect(listChildren[0].textContent).toEqual("12:00");
-    expect(listChildren[1].textContent).toEqual("13:00");
+    expect(listChildren[0]).toContainText("12:00");
+    expect(listChildren[1]).toContainText("13:00");
   });
 
   it("initially shows a message saying there are no appointments today", () => {
     render(<AppointmentsDayView appointments={[]} />);
-    expect(document.body.textContent).toContain(
+    expect(document.body).toContainText(
       "There are no appointments scheduled for today."
     );
   });
 
   it("selectes the first appointment by default", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-    expect(document.body.textContent).toContain("Ashley");
+    expect(document.body).toContainText("Ashley");
   });
 
   it("has a button element in each li", () => {
@@ -141,7 +132,7 @@ describe("AppointmentsDayView", () => {
   it("renders another appointment when selected", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
     const button = document.querySelectorAll("button")[1];
-    act(() => button.click());
-    expect(document.body.textContent).toContain("Jordan");
+    click(button);
+    expect(document.body).toContainText("Jordan");
   });
 });
