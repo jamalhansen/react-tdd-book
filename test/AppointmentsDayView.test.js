@@ -65,8 +65,8 @@ describe("Appointment", () => {
 
   it("renders the appointment time prominantly", () => {
     render(<Appointment {...appointment} />);
-    const header = document.querySelector("h2");
-    expect(header.textContent).toEqual("15:00 Appointment");
+    const header = document.querySelector("h3");
+    expect(header.textContent).toEqual("Today's appointment at 15:00");
   });
 });
 

@@ -13,29 +13,35 @@ export const Appointment = ({
   startsAt,
 }) => {
   return (
-    <>
-      <h2>{`${appointmentTimeOfDay(startsAt)} Appointment`}</h2>
+    <div id="appointmentView">
+      <h3>{`Today's appointment at ${appointmentTimeOfDay(startsAt)}`}</h3>
       <table>
-        <thead>
-          <tr>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Stylist</td>
-            <td>Service</td>
-            <td>Notes</td>
-          </tr>
-        </thead>
         <tbody>
           <tr>
-            <td>{customer.firstName}</td>
-            <td>{customer.lastName}</td>
+            <td>Customer</td>
+            <td>
+              {customer.firstName} {customer.lastName}
+            </td>
+          </tr>
+          <tr>
+            <td>Phone Number</td>
+            <td>{customer.phoneNumber}</td>
+          </tr>
+          <tr>
+            <td>Stylist</td>
             <td>{stylist}</td>
+          </tr>
+          <tr>
+            <td>Service</td>
             <td>{service}</td>
+          </tr>
+          <tr>
+            <td>Notes</td>
             <td>{notes}</td>
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 
