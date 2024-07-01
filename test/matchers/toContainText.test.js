@@ -1,6 +1,5 @@
 import { toContainText } from "./toContainText";
-
-const stripTerminalColor = (text) => text.replace(/\x1B\[\d+m/g, "");
+import { stripTerminalColor } from "./reactMatcherTestExtensions";
 
 describe("toContainText matcher", () => {
   it("returns pass is true when test is found in the given DOM element", () => {
