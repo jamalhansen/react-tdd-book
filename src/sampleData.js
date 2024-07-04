@@ -73,3 +73,9 @@ const buildTimeSlots = () => {
 };
 
 export const sampleAvailableTimeSlots = pickMany(buildTimeSlots(), 50);
+
+export const blankCustomer = {
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+};
