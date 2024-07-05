@@ -26,6 +26,8 @@ describe("AppointmentForm", () => {
   });
 
   describe("service field", () => {
+    const services = ["Cut", "Blow-dry"];
+
     it("renders as a select box", () => {
       render(<AppointmentForm />);
       expect(field("service")).not.toBeNull();
@@ -39,8 +41,6 @@ describe("AppointmentForm", () => {
     });
 
     it("lists all salon services", () => {
-      const services = ["Cut", "Blow-dry"];
-
       render(<AppointmentForm selectableServices={services} />);
 
       expect(labelsOfAllOptions(field("service"))).toEqual(
@@ -49,7 +49,6 @@ describe("AppointmentForm", () => {
     });
 
     it("pre-selects the existing value", () => {
-      const services = ["Cut", "Blow-dry"];
       const appointment = { service: "Blow-dry" };
       render(
         <AppointmentForm selectableServices={services} original={appointment} />
