@@ -11,7 +11,7 @@ export const toBeInputFieldOfType = (received, expectedType) => {
         isNot: pass,
       }
     );
-  const actualClassHint = () => `Actual type: ${printReceived(received.type)}`;
-  const message = () => [sourceHint(), actualClassHint()].join("\n\n");
+  const actualTypeHint = () => `Actual type: ${printReceived(received.type)}`;
+  const message = () => [sourceHint(), actualTypeHint()].join("\n\n");
   return { pass, message };
 };

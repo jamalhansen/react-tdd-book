@@ -14,7 +14,7 @@ describe("toBeInputFieldOfType matcher", () => {
     const domElement = {
       type: "testType",
     };
-    const result = toBeInputFieldOfType(domElement, "testType");
+    const result = toBeInputFieldOfType(domElement, "notTestType");
     expect(result.pass).toBe(false);
   });
 
@@ -42,7 +42,7 @@ describe("toBeInputFieldOfType matcher", () => {
     };
     const result = toBeInputFieldOfType(domElement, "testType");
     expect(stripTerminalColor(result.message())).toContain(
-      `Actual class: "testType"`
+      `Actual type: "testType"`
     );
   });
 });
