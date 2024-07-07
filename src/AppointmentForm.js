@@ -19,7 +19,7 @@ const dailyTimeSlots = (salonOpensAt, salonClosesAt) => {
   const increment = 30 * 60 * 1000;
   return timeIncrements(totalSlots, startTime, increment);
 };
-const totimeValue = (timestamp) =>
+const toTimeValue = (timestamp) =>
   new Date(timestamp).toTimeString().substring(0, 5);
 const weeklyDateValues = (startDate) => {
   const midnight = startDate.setHours(0, 0, 0, 0);
@@ -27,11 +27,34 @@ const weeklyDateValues = (startDate) => {
   return timeIncrements(7, midnight, increment);
 };
 const toShortDate = (timestamp) => {
-  const [day, , dayofMonth] = new Date(timestamp).toDateString().split(" ");
-  return `${day} ${dayofMonth}`;
+  const [day, , dayOfMonth] = new Date(timestamp).toDateString().split(" ");
+  return `${day} ${dayOfMonth}`;
 };
 
-const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
+const mergeDateAndTime = (date, timeSlot) => {
+  const time = new Date(timeSlot);
+  return new Date(date).setHours(
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds(),
+    time.getMilliseconds()
+  );
+};
+
+const RadioButtonIfAvailable = ({ availableTimeSlots, date, timeSlot }) => {
+  const startsAt = mergeDateAndTime(date, timeSlot);
+  if (availableTimeSlots.some((a) => a.startsAt === startsAt)) {
+    return <input name="startsAt" type="radio" value={startsAt} />;
+  }
+  return null;
+};
+
+const TimeSlotTable = ({
+  salonOpensAt,
+  salonClosesAt,
+  today,
+  availableTimeSlots,
+}) => {
   const dates = weeklyDateValues(today);
   const timeSlots = dailyTimeSlots(salonOpensAt, salonClosesAt);
   return (
@@ -47,7 +70,16 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
       <tbody>
         {timeSlots.map((timeSlot) => (
           <tr key={timeSlot}>
-            <th>{totimeValue(timeSlot)}</th>
+            <th>{toTimeValue(timeSlot)}</th>
+            {dates.map((date) => (
+              <td key={date}>
+                <RadioButtonIfAvailable
+                  availableTimeSlots={availableTimeSlots}
+                  date={date}
+                  timeSlot={timeSlot}
+                />
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>
@@ -56,23 +88,27 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
 };
 
 export const AppointmentForm = ({
-  selectableServices = defaultSelectableServices,
   original = {},
+  selectableServices = defaultSelectableServices,
   salonOpensAt = 9,
   salonClosesAt = 19,
   today = new Date(),
-} = {}) => (
-  <form>
-    <select name="service" value={original.service} readOnly>
-      <option />
-      {selectableServices.map((s) => (
-        <option key={s}>{s}</option>
-      ))}
-    </select>
-    <TimeSlotTable
-      salonOpensAt={salonOpensAt}
-      salonClosesAt={salonClosesAt}
-      today={today}
-    />
-  </form>
-);
+  availableTimeSlots,
+} = {}) => {
+  return (
+    <form>
+      <select name="service" value={original.service} readOnly>
+        <option />
+        {selectableServices.map((s) => (
+          <option key={s}>{s}</option>
+        ))}
+      </select>
+      <TimeSlotTable
+        salonOpensAt={salonOpensAt}
+        salonClosesAt={salonClosesAt}
+        today={today}
+        availableTimeSlots={availableTimeSlots}
+      />
+    </form>
+  );
+};
